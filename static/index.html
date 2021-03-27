@@ -54,11 +54,9 @@ function drawCircle(context,entity) {
         lineWidth = 3;
         var x = entity["x"];
         var y = entity["y"];
-        //moveTo(x,y);
-        // fillStyle = entity["colour"];
-        // strokeStyle = fillStyle;
-        // arc(x, y, (entity["radius"])?entity["radius"]:50, 0, 2.0 * Math.PI, false);
-        context.drawImage(niceDot, x, y, 90, 90);
+        moveTo(x,y);
+        const rad = (entity["radius"])?entity["radius"]:40;
+        context.drawImage(niceDot, x, y, rad, rad);
         stroke();
     }
 }
@@ -68,7 +66,7 @@ function prepEntity(entity) {
         entity["colour"] = "#FF0000";
     }
     if (!entity["radius"]) {
-        entity["radius"] = 50;
+        entity["radius"] = 90;
     }
     return entity;
 }
@@ -129,9 +127,6 @@ function addEntity(entity, data) {
     world[entity] = data;
     drawNextFrame(); // (but should we?)
     //XXX: Send a XHTML Request that updates the entity you just modified!
-    // var msg = {};
-    // msg[entity] = data;
-    // var msg = ;
     socket.send(JSON.stringify({ [entity]: data }));
 }
 var counter = 0;
@@ -248,7 +243,7 @@ mouse.mouseuppers.push(function(x,y,clicked,e) {
 
 mouse.mousedraggers.push(function(x,y,clicked,e) {
     addEntityWithoutName({'x':x,'y':y,'colour':'green',
-                          'radius':10});
+                          'radius':40});
 });
 
 
