@@ -60,24 +60,27 @@ class World:
     def update_listeners(self, entity):
         '''update the set listeners'''
         for listener in self.listeners:
-            listener(entity, self.get(entity))
+            listener[entity] = self.get(entity)
 
     def clear(self):
         self.space = dict()
 
     def get(self, entity):
         return self.space.get(entity,dict())
-    
+
     def world(self):
         return self.space
 
-myWorld = World()        
+myWorld = World()
 
 def set_listener( entity, data ):
     ''' do something with the update ! '''
+    listener = dict()
+    listener[entity] = data
+    return listener
 
 myWorld.add_set_listener( set_listener )
-        
+
 @app.route('/')
 def hello():
     '''Return something coherent here.. perhaps redirect to /static/index.html '''
@@ -92,7 +95,8 @@ def read_ws(ws,client):
             print("WS RECV: %s" % msg)
             if (msg is not None):
                 packet = json.loads(msg)
-                for client in world.clients:
+                # myWorld.set(entity, entity_json)
+                for client in myWorld.clients:
                     client.put(json.dumps(packet))
             else:
                 break
@@ -105,7 +109,7 @@ def subscribe_socket(ws):
        websocket and read updates from the websocket '''
     # XXX: TODO IMPLEMENT ME
     client = Client()
-    world.clients.append(client)
+    myWorld.clients.append(client)
     g = gevent.spawn( read_ws, ws, client )    
     print("Subscribing")
     try:
@@ -117,7 +121,7 @@ def subscribe_socket(ws):
     except Exception as e:# WebSocketError as e:
         print("WS Error %s" % e)
     finally:
-        world.clients.remove(client)
+        myWorld.clients.remove(client)
         gevent.kill(g)
 
 
