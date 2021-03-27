@@ -36,8 +36,12 @@ var H = canvas.height = window.innerHeight-50;
 var wscounter = 0;
 var socket;
 
-var niceDot = new Image();
-        niceDot.src = "./dot.png";
+var doge = new Image();
+        doge.src = "./doge.jpg";
+var blueDot = new Image();
+        blueDot.src = "./blue.png";
+var greenDot = new Image();
+        greenDot.src = "./green.png";
 
 function debug(str) {
     var debugDiv = document.getElementById('debug');
@@ -55,8 +59,20 @@ function drawCircle(context,entity) {
         var x = entity["x"];
         var y = entity["y"];
         moveTo(x,y);
+        var dot = doge;
+        switch (entity["colour"]) {
+            case "green":
+                dot = greenDot;
+                break;
+            case "blue":
+                dot = blueDot;
+                break;
+            default:
+                dot = doge;
+                break;
+        }
         const rad = (entity["radius"])?entity["radius"]:40;
-        context.drawImage(niceDot, x, y, rad, rad);
+        context.drawImage(dot, x, y, rad, rad);
         stroke();
     }
 }
