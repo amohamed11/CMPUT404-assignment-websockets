@@ -36,6 +36,9 @@ var H = canvas.height = window.innerHeight-50;
 var wscounter = 0;
 var socket;
 
+var niceDot = new Image();
+        niceDot.src = "./dot.png";
+
 function debug(str) {
     var debugDiv = document.getElementById('debug');
     debugDiv.innerHTML = "" + str;
@@ -52,10 +55,11 @@ function drawCircle(context,entity) {
         var x = entity["x"];
         var y = entity["y"];
         //moveTo(x,y);
-        fillStyle = entity["colour"];
-        strokeStyle = fillStyle;
-        arc(x, y, (entity["radius"])?entity["radius"]:50, 0, 2.0 * Math.PI, false);  
-        stroke();                                
+        // fillStyle = entity["colour"];
+        // strokeStyle = fillStyle;
+        // arc(x, y, (entity["radius"])?entity["radius"]:50, 0, 2.0 * Math.PI, false);
+        context.drawImage(niceDot, x, y, 50, 50);
+        stroke();
     }
 }
 
